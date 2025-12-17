@@ -1,16 +1,18 @@
 #pragma once
 #include <string>
+using namespace std;
 
 enum class RideStatus { REQUESTED, ASSIGNED, IN_PROGRESS, COMPLETED, CANCELLED };
 
 class Ride {
 public:
-    std::string id;
-    std::string riderId;
-    std::string driverId;
+    string id;
+    string riderId;
+    string driverId;
+    double fare;
     RideStatus status;
 
-    Ride() : id(""), riderId(""), driverId(""), status(RideStatus::REQUESTED) {}
-    Ride(const std::string& rideId, const std::string& riderId)
-        : id(rideId), riderId(riderId), driverId(""), status(RideStatus::REQUESTED) {}
+    Ride() : id(""), riderId(""), driverId(""), fare(0), status(RideStatus::REQUESTED) {}
+    Ride(const string& rideId, const string& riderId)
+        : id(rideId), riderId(riderId), driverId(""), fare(fare), status(RideStatus::REQUESTED) {}
 };

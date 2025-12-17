@@ -1,15 +1,26 @@
 #pragma once
 #include <string>
+using namespace std;
 
 class Driver {
 public:
-    std::string id;
-    std::string name;
-    double latitude;
-    double longitude;
+    string id;
+    string name;
+    string contact;
+    double x, y;
     bool available;
+    double totalRating;
+    int countRating;
 
-    Driver() : id(""), name(""), latitude(0), longitude(0), available(true) {}
-    Driver(const std::string& id, const std::string& name, double lat, double lon)
-        : id(id), name(name), latitude(lat), longitude(lon), available(true) {}
+    Driver() : id(""), name(""), contact(""), x(0), y(0), available(true) {}
+    Driver(const string& id, const string& name, const string& contact, double lat, double lon);
+
+    void setContact(const string &contact);
+
+    double getAverageRating(){
+        if(countRating == 0)
+            return 0.0;
+        return totalRating / countRating;
+    }
+
 };

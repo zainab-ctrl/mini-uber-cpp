@@ -1,21 +1,7 @@
 # Build dir
 build/
-CMakeFiles/
-.cmake/
-
-# CMake generated files
-CMakeCache.txt
-cmake_install.cmake
-Makefile
 
 # Executables
 *.exe
-*.out
-*.app
-
-# IDE/editor files
-.vscode/
-
-# OS generated files
-.DS_Store
-Thumbs.db
+*.o
+*.obj
