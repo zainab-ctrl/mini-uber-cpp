@@ -9,9 +9,7 @@ public:
     string contact;
     double x, y;
 
-    Rider() : id(""), name(""), contact(""), x(0), y(0) {}
+    Rider();
     Rider(const string& id, const string& name, const string& contact, double lat, double lon) ;
-
-   void setContact(const string &contact);
 
 };

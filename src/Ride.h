@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include<chrono>
+#include<ctime>
 using namespace std;
 
 enum class RideStatus { REQUESTED, ASSIGNED, IN_PROGRESS, COMPLETED, CANCELLED };
@@ -10,9 +12,10 @@ public:
     string riderId;
     string driverId;
     double fare;
+    double distance;
+    time_t  requestTime;
     RideStatus status;
 
-    Ride() : id(""), riderId(""), driverId(""), fare(0), status(RideStatus::REQUESTED) {}
-    Ride(const string& rideId, const string& riderId)
-        : id(rideId), riderId(riderId), driverId(""), fare(fare), status(RideStatus::REQUESTED) {}
+    Ride();
+    Ride(const string& rideId, const string& riderId, time_t requestTime);
 };

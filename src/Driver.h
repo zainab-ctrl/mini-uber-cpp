@@ -4,23 +4,15 @@ using namespace std;
 
 class Driver {
 public:
-    string id;
-    string name;
-    string contact;
+    string id, name, contact;
     double x, y;
     bool available;
     double totalRating;
-    int countRating;
+    int ratingCount;
 
-    Driver() : id(""), name(""), contact(""), x(0), y(0), available(true) {}
-    Driver(const string& id, const string& name, const string& contact, double lat, double lon);
+    Driver();
+    Driver(const string& id, const string& name, const string& contact, double x, double y);
 
-    void setContact(const string &contact);
-
-    double getAverageRating(){
-        if(countRating == 0)
-            return 0.0;
-        return totalRating / countRating;
-    }
-
+    void addRating(double rating);
+    double getAverageRating() const;
 };

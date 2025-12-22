@@ -15,6 +15,9 @@ add_executable(MiniUber
     src/Pattern.h
     src/Pattern.cpp
     src/Ride.h
+    src/Ride.cpp
     src/RideManager.h
     src/RideManager.cpp
+    src/Sort.h
+    src/Search.h
 )
