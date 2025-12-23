@@ -59,7 +59,7 @@ public:
         int linearIndex = linearSearch(originalList, searchKey, getId);
         auto endLinear = chrono::high_resolution_clock::now();
         auto linearTime =
-            chrono::duration_cast<chrono::nanoseconds>(endLinear - startLinear).count();
+            chrono::duration_cast<chrono::microseconds>(endLinear - startLinear).count();
 
         // --------- Print linear search result BEFORE sort ---------
         cout << "\n=== SEARCH RESULT ===\n";
@@ -80,10 +80,10 @@ public:
         int binaryIndex = binarySearch(sortedList, searchKey, getId);
         auto endBinary = chrono::high_resolution_clock::now();
         auto binaryTime =
-            chrono::duration_cast<chrono::nanoseconds>(endBinary - startBinary).count();
+            chrono::duration_cast<chrono::microseconds>(endBinary - startBinary).count();
 
         cout << "\nTime Comparison:\n";
-        cout << "Linear Search Time : " << linearTime << " nanoseconds\n";
-        cout << "Binary Search Time : " << binaryTime << " nanoseconds\n";
+        cout << "Linear Search Time : " << linearTime << " microseconds\n";
+        cout << "Binary Search Time : " << binaryTime << " microseconds\n";
     }
 };

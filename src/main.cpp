@@ -23,6 +23,7 @@ int main() {
 
     // Load saved data
     manager.loadDriversData();
+    // manager.generateDriverDataset();
     manager.loadCompletedRidesData();
     manager.loadCancelledRidesData();
     manager.loadRidersData();
@@ -200,6 +201,7 @@ save_and_exit:
     manager.saveRidersData();
     manager.savePasskey();
     manager.saveCancelledRidesData();
+    manager.writeAnalyticsReport("RideAnalyticsReport.txt");
 
     cout << "Data saved. Exiting program.\n";
     return 0;

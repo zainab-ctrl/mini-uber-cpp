@@ -53,10 +53,6 @@ public:
     void updateDriver(const string& driverId, const string& contact, const string& newName, bool availability, double x, double y);
     void viewDrivers();
     void viewRiders();
-    bool searchDriver(const string& driverId);
-    bool searchRider(const string& riderId);
-    // void sortByName();
-    // void sortByRating();
 
     void activeRides();
     void completedRidesList();
@@ -94,4 +90,6 @@ public:
     void searchDriverCompare(const string &driverId);
     void searchRiderCompare(const string &riderId);
     void compareDriverSorts();
+    void writeAnalyticsReport(const string& filename);
+    void generateDriverDataset();
 };

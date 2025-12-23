@@ -5,9 +5,12 @@
 #include <queue>
 #include <cmath>
 #include <fstream>
+#include <iomanip>
 #include <chrono>
 #include <algorithm>
 #include <sstream>
+#include <cstdlib>
+#include <ctime>
 using namespace std;
 
 RideManager::RideManager(const string passkey) 
@@ -117,42 +120,6 @@ void RideManager::viewRiders(){
     }
 }
 
-bool RideManager::searchDriver(const string &driverId){
-    auto it = drivers.find(driverId);
-
-    if (it == drivers.end()) {
-        cout << "Driver not found.\n";
-        return false;
-    }
-
-    Driver &d = it->second;
-     cout << "ID: " << d.id
-             << " | Name: " << d.name
-             << " | contact: " << d.contact
-             << " | x: " << d.x
-             << " | y: " << d.y
-             << " | Rating count: " << d.ratingCount
-             << " | Total Rating: " << d.totalRating
-             << " | Status: " << (d.available ? "Available" : "Busy") << endl;
-    return true;
-}
-
-bool RideManager::searchRider(const string &riderId){
-    auto it = riders.find(riderId);
-    if (it == riders.end()) {
-        cout << "Rider not found.\n";
-        return false;
-    }
-
-    Rider &r = it->second;
-    cout << "ID: " << r.id
-             << " | Name: " << r.name
-             << " | Contact: " << r.contact
-             << " | x: " << r.x
-             << " | y: " << r.y << endl;
-    return true;
-}
-
 void RideManager::activeRides() {
     if (rides.empty()) {
         cout << "No active rides.\n";
@@ -214,7 +181,7 @@ void RideManager::requestRide(const string &riderId) {
     rides[rideId] = Ride(rideId, riderId, time);
     Ride &ride = rides[rideId];             // & use to point to the original ride to update
     if (!AssignNearestDriver(ride))
-        requests.push(ride.id); //Added rideId to the queue not ride whose status is requested
+        requests.push(ride.id); 
 }
 
 void RideManager::processPendingRequests(){
@@ -225,10 +192,12 @@ void RideManager::processPendingRequests(){
 }
 
 bool RideManager::AssignNearestDriver(Ride &ride){
-    priority_queue<DriverDistance, vector<DriverDistance>, greater<DriverDistance>> pq;    // By default max-Heap
+    priority_queue<DriverDistance,
+                vector<DriverDistance>, 
+                greater<DriverDistance>> pq;    // By default max-Heap
 
     for (auto &pair : drivers) {
-        Driver &driver = pair.second;           // Not making copy but pointing to original
+        Driver &driver = pair.second;    // Not making copy but pointing to original
         if (!driver.available) continue;    // Ignore busy driver
 
         double dist = calculateDistance(driver.x, driver.y, riders[ride.riderId].x, riders[ride.riderId].y);
@@ -528,7 +497,7 @@ void RideManager::saveRidersData(){
 }
 
 void RideManager::loadDriversData(){
-    ifstream in("DriversData.txt");
+    ifstream in("drivers_data.txt");
     if (!in) return;
 
     Driver d;
@@ -717,4 +686,90 @@ void RideManager::compareDriverSorts() {
              << quickList[i].name
              << " | Rating: " << quickList[i].totalRating << endl;
     }
+}
+
+void RideManager::writeAnalyticsReport(const string& filename) {
+    ofstream file(filename);
+
+    if (!file.is_open()) {
+        cout << "Error: Unable to create analytics report file.\n";
+        return;
+    }
+
+    // ================= SUMMARY =================
+    file << "=========== RIDE SHARING SYSTEM REPORT ===========" << endl;
+    file << "=============== SUMMARY STATISTICS ===============\n\n";
+
+    file << "Rides Completed : " << completedRides.size() << endl;
+    file << "Rides Cancelled : " << cancelledRides.size() << endl;
+    file << "Total Earnings  : " << totalEarnings() << endl;
+    file << "Average Rating  : " << fixed << setprecision(2) << AverageRating() << endl;
+    file << "Average Distance: " << fixed << setprecision(2) << AverageDistance() << endl;
+
+    // ================= EARNINGS PER DRIVER =================
+    file << "\n=============== EARNINGS PER DRIVER ===============\n";
+    file << "Driver ID | Earnings\n";
+    file << "---------------------\n";
+
+    for (auto& d : drivers) {
+        double earn = earningPerDriver(d.first);
+        file << d.first << " | " << earn << endl;
+    }
+
+    // ================= MOST ACTIVE DRIVERS =================
+    file << "\n=============== MOST ACTIVE DRIVER(S) ===============\n";
+    auto activeDrivers = activeDriver();
+
+    for (auto& id : activeDrivers) {
+        Driver& d = drivers[id];
+        file << d.id << " | " << d.name << endl;
+    }
+
+    // ================= MOST ACTIVE RIDERS =================
+    file << "\n=============== MOST ACTIVE RIDER(S) ===============\n";
+    auto activeRiders = mostBookingsRider();
+
+    for (auto& id : activeRiders) {
+        Rider& r = riders[id];
+        file << r.id << " | " << r.name << endl;
+    }
+
+    file << "\n=========== END OF REPORT ===========\n";
+    file.close();
+}
+
+void RideManager::generateDriverDataset(){
+    ofstream file("drivers_data.txt");
+    srand(time(0));
+
+    vector<string> names = {
+        "Ali","Ahmed","Sara","Ayesha","Zain","Hina","Bilal","Usman","Noor",
+        "Hamza","Fatima","Kashif","Amna","Talha","Zara","Imran","Hassan",
+        "Sana","Qasim","Laiba","Saad","Anum","Rida","Adeel","Nida"
+    };
+
+    int startId = 1;        
+    int totalRecords = 3000; 
+
+    for (int i = 0; i < totalRecords; i++) {
+        string id = "D" + to_string(startId + i);
+        string name = names[rand() % names.size()];
+        string phone = "03" + to_string(100000000 + rand() % 900000000);
+
+        int x = 20 + rand() % 60;
+        int y = 50 + rand() % 50;
+        int rides = rand() % 10;
+        int rating = rand() % 4;
+
+        file << id << " | "
+             << name << " | "
+             << phone << " | "
+             << x << " | "
+             << y << " | "
+             << rides << " | "
+             << rating << endl;
+    }
+
+    file.close();
+    cout << "1200 driver records generated successfully!\n";
 }
