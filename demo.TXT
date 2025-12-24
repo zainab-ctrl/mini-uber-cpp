@@ -1,0 +1,20 @@
+-- System Design
+
+-- Menu
+Manager (Authentication Applied)
+User
+
+-- User Menu
+Registeration
+Update Profile
+Bookings
+Request for Ride
+Cancel Ride
+Complete Ride
+
+-- Manager Menu
+Add, Update, Remove, View Drivers
+View Active, Completed Rides
+Manage Password and Fare Rates
+Process Queued Requests
+System Report (Analytics & Statistics)
